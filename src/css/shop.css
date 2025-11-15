@@ -1,0 +1,131 @@
+.shop-page {
+  background-color: #ffffff;
+}
+
+/* Hero banner */
+.shop-hero {
+  position: relative;
+  min-height: 260px;
+  background-image: url('https://tulsiyajewels.com/wp-content/uploads/2025/01/shop-page-title-bg.png');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.shop-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0));
+  pointer-events: none;
+}
+
+.shop-hero-inner {
+  position: relative;
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.shop-title {
+  font-size: 2.5rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.shop-breadcrumb {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #777;
+}
+
+/* Categories section */
+.shop-categories-section {
+  padding: 4rem 1.5rem 4rem;
+}
+
+.shop-categories-static {
+  max-width: 72rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.shop-category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.shop-category-image-wrap {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shop-category-label {
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Mobile auto-scrolling strip */
+.shop-categories-strip {
+  margin-top: 2.5rem;
+  overflow: hidden;
+}
+
+.shop-categories-track {
+  display: flex;
+  gap: 1.5rem;
+  animation: shop-scroll 18s linear infinite;
+}
+
+@keyframes shop-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive behaviour */
+@media (max-width: 768px) {
+  .shop-categories-static {
+    display: none; /* hide static row on mobile */
+  }
+
+  .shop-categories-section {
+    padding-inline: 1rem;
+  }
+
+  .shop-category-image-wrap {
+    width: 130px;
+    height: 130px;
+  }
+}
+
+@media (min-width: 769px) {
+  .shop-categories-strip {
+    display: none; /* no auto-scrolling on desktop */
+  }
+}
