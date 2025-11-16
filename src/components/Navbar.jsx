@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "../css/Nav.css";
+import logo from "../assets/SWJ_Logo.png";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -38,11 +39,7 @@ export default function Navbar() {
             {/* Logo */}
             <div className="nav-logo">
               <a href="/">
-                <img
-                  src="https://tulsiyajewels.com/wp-content/uploads/2025/01/IMG_8589-removebg.png"
-                  alt="TULSIYA JEWELS"
-                  className="logo-img"
-                />
+                <img src={logo} alt="Seasworth Jewels" className="logo-img" />
               </a>
             </div>
 
@@ -139,7 +136,7 @@ export default function Navbar() {
               </svg>
             </a>
             <a
-              href="#shop"
+              href="/shop"
               className="mobile-nav-link"
               onClick={() => setOpen(false)}
             >

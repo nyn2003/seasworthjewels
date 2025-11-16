@@ -56,7 +56,7 @@ export default function Hero() {
           </div>
 
           {/* Description */}
-          <p className="hero-description">Discover The Miraculous Tulsiya</p>
+          <p className="hero-description">SEAS WORTH JEWELS</p>
 
           {/* Buttons */}
           <div className="hero-buttons">

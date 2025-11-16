@@ -64,6 +64,14 @@
   gap: 0.75rem;
 }
 
+.shop-category-card-active .shop-category-image-wrap {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 0 18px rgba(0, 0, 0, 0.25);
+}
+
+.shop-category-card-active .shop-category-label {
+  font-weight: 500;
+}
+
 .shop-category-image-wrap {
   width: 160px;
   height: 160px;
@@ -73,6 +81,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
 }
 
 .shop-category-image {
@@ -85,6 +94,136 @@
   font-size: 0.95rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+/* Products grid */
+.shop-products-section {
+  padding: 0 1.5rem 4rem;
+}
+
+.shop-products-header {
+  max-width: 1200px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.shop-products-results {
+  color: #777;
+}
+
+.shop-products-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.shop-products-sort-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.shop-products-sort-select {
+  border: 1px solid #ddd;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.9rem;
+  background-color: #fff;
+}
+
+.shop-products-view-icons {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: 0.5rem;
+}
+
+.shop-view-icon {
+  font-size: 0.95rem;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: transparent;
+  line-height: 1;
+}
+
+.shop-view-icon-active {
+  border-color: #000;
+}
+
+.shop-products-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.5rem;
+}
+
+.shop-products-grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.shop-product-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.shop-product-image-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.shop-product-image {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.shop-product-card:hover .shop-product-image {
+  transform: scale(1.03);
+}
+
+.shop-product-meta {
+  padding-top: 1.25rem;
+  text-align: center;
+}
+
+.shop-product-category {
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #777;
+  margin-bottom: 0.35rem;
+}
+
+.shop-product-name {
+  font-size: 0.95rem;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.shop-product-price {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.shop-product-button {
+  margin-top: 0.75rem;
+  padding: 0.45rem 1.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border: 1px solid #000;
+  background-color: transparent;
+  color: #000;
+  cursor: pointer;
+}
+
+.shop-product-button:hover {
+  background-color: #000;
+  color: #fff;
 }
 
 /* Mobile auto-scrolling strip */
@@ -121,6 +260,17 @@
   .shop-category-image-wrap {
     width: 130px;
     height: 130px;
+  }
+
+  .shop-products-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .shop-products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
   }
 }
 

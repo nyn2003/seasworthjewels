@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Hero from "./components/Hero.jsx";
 import Collections from "./components/Collections.jsx";
 import Footer from "./components/Footer.jsx";
 import Shop from "./components/Shop.jsx";
+import Preloader from "./components/Preloader.jsx";
 
 function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
 
   // Normal scroll listener for scroll-to-top button
   useEffect(() => {
@@ -22,6 +25,16 @@ function App() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  if (location.pathname === "/" && isLoading) {
+    return (
+      <Preloader
+        onComplete={() => {
+          setIsLoading(false);
+        }}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
