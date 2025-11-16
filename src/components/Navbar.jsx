@@ -116,11 +116,11 @@ export default function Navbar() {
           {/* Mobile Logo */}
           <div className="mobile-logo">
             <img
-              src="https://tulsiyajewels.com/wp-content/uploads/2025/01/IMG_8589-removebg.png"
-              alt="TULSIYA JEWELS"
+              src={logoBlack}
+              alt="Seasworth Jewels"
               className="mobile-logo-img"
             />
-            <span className="mobile-logo-text">TULSIYA JEWELS</span>
+            <span className="mobile-logo-text">SEASWORTH JEWELS</span>
           </div>
 
           {/* Navigation Links */}
@@ -189,7 +189,7 @@ export default function Navbar() {
 
           {/* Mobile Footer */}
           <div className="mobile-menu-footer">
-            <p className="mobile-copyright">© 2025 Tulsiya Jewels</p>
+            <p className="mobile-copyright">© 2025 Seasworth Jewels</p>
           </div>
         </div>
       </div>
