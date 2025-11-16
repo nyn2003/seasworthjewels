@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../css/shop.css";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const categories = [
   {
@@ -249,6 +251,39 @@ export default function Shop() {
   };
   const currentProducts = productMap[activeCategory] || ringProducts;
   const sortedProducts = getSortedProducts(currentProducts, sortBy);
+  const productsRef = useRef([]);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+  }, []);
+
+  useEffect(() => {
+    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+    productsRef.current.forEach((el) => {
+      if (!el) return;
+
+      gsap.fromTo(
+        el,
+        { autoAlpha: 0, y: 40 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, [sortedProducts]);
   return (
     <div className="shop-page">
       {/* Hero banner */}
@@ -354,8 +389,14 @@ export default function Shop() {
             viewMode === "4" ? "shop-products-grid-4" : ""
           }`}
         >
-          {sortedProducts.map((product) => (
-            <article key={product.id} className="shop-product-card">
+          {sortedProducts.map((product, index) => (
+            <article
+              key={product.id}
+              className="shop-product-card"
+              ref={(el) => {
+                productsRef.current[index] = el;
+              }}
+            >
               <div className="shop-product-image-wrap">
                 <img
                   src={product.image}

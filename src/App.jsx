@@ -11,7 +11,6 @@ function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
-
   // Normal scroll listener for scroll-to-top button
   useEffect(() => {
     const handleScroll = () => {
