@@ -5,13 +5,31 @@ export default function Footer() {
     <footer className="footer">
       {/* Main Footer Content */}
       <div className="footer-main">
-        {/* Left Section - Showroom Image */}
+        {/* Left Section - Newsletter */}
         <div className="footer-left">
-          <img
-            src="https://tulsiyajewels.com/wp-content/uploads/2025/01/IMG_8513.jpg"
-            alt="Tulsiya Jewels Showroom"
-            className="showroom-image"
-          />
+          <div className="footer-newsletter">
+            <h3 className="newsletter-title">Get updates</h3>
+            <p className="newsletter-text">
+              Be the first to know about new collections, exclusive offers and
+              more.
+            </p>
+            <form
+              className="newsletter-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <input
+                type="email"
+                className="newsletter-input"
+                placeholder="Enter your email"
+                required
+              />
+              <button type="submit" className="newsletter-button">
+                Subscribe
+              </button>
+            </form>
+          </div>
         </div>
 
         {/* Right Section - Links & Contact */}
@@ -36,8 +54,6 @@ export default function Footer() {
                 <a href="#necklaces">Necklaces</a>
                 <a href="#bracelet">Bracelet</a>
                 <a href="#earrings">Earrings</a>
-                <a href="#gifts">Gift Ideas</a>
-                <a href="#charms">Charm & Dangles</a>
               </nav>
             </div>
 
@@ -116,12 +132,8 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="footer-bottom">
-        <div className="payment-methods">
-          <span>PayPal</span>
-          <span>VISA</span>
-        </div>
         <p className="copyright">
-          © 2025 Tulsiya Jewels. All Rights Reserved.
+          2025-26 SEARWORTH JEWELS ALL RIGHTS RESERVED
         </p>
       </div>
     </footer>

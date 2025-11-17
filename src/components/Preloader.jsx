@@ -54,8 +54,7 @@ export default function Preloader({ onComplete }) {
     <div className="preloader-overlay" ref={containerRef}>
       <div className="preloader-inner">
         <div className="preloader-text-block" ref={textRef}>
-          <span className="preloader-word">SEAS</span>
-          <span className="preloader-word">WORTH</span>
+          <span className="preloader-word">SEASWORTH</span>
           <span className="preloader-word">JEWELS</span>
         </div>
         <div className="preloader-counter">

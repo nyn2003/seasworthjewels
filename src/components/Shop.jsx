@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "../css/shop.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { parsePrice, getSortedProducts } from "../utils/shopUtils";
 
 const categories = [
   {
@@ -219,39 +220,24 @@ const necklaceProducts = [
   },
 ];
 
-function parsePrice(priceString) {
-  if (!priceString) return 0;
-  const numeric = priceString.replace(/[^0-9.]/g, "");
-  return parseFloat(numeric) || 0;
-}
-
-function getSortedProducts(products, sortBy) {
-  const base = [...products];
-
-  if (sortBy === "price-low-high") {
-    return base.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
-  }
-
-  if (sortBy === "price-high-low") {
-    return base.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
-  }
-
-  return base;
-}
+const productMap = {
+  Rings: ringProducts,
+  Necklaces: necklaceProducts,
+  Bracelets: braceletProducts,
+  Earrings: earringProducts,
+};
 
 export default function Shop() {
   const [sortBy, setSortBy] = useState("default");
   const [activeCategory, setActiveCategory] = useState("Rings");
   const [viewMode, setViewMode] = useState("3"); // "3" or "4" columns
-  const productMap = {
-    Rings: ringProducts,
-    Necklaces: necklaceProducts,
-    Bracelets: braceletProducts,
-    Earrings: earringProducts,
-  };
   const currentProducts = productMap[activeCategory] || ringProducts;
   const sortedProducts = getSortedProducts(currentProducts, sortBy);
   const productsRef = useRef([]);
+  const categoriesStripRef = useRef(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -284,6 +270,114 @@ export default function Shop() {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [sortedProducts]);
+
+  const handleDragStart = (clientX) => {
+    const strip = categoriesStripRef.current;
+    if (!strip) return;
+    isDraggingRef.current = true;
+    startXRef.current = clientX - strip.offsetLeft;
+    scrollLeftRef.current = strip.scrollLeft;
+  };
+
+  const handleDragMove = (clientX) => {
+    if (!isDraggingRef.current) return;
+    const strip = categoriesStripRef.current;
+    if (!strip) return;
+    const x = clientX - strip.offsetLeft;
+    const walk = (x - startXRef.current) * 1.2;
+    strip.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const handleDragEnd = () => {
+    isDraggingRef.current = false;
+  };
+
+  const onMouseDown = (e) => {
+    handleDragStart(e.clientX);
+  };
+
+  const onMouseMove = (e) => {
+    if (!isDraggingRef.current) return;
+    e.preventDefault();
+    handleDragMove(e.clientX);
+  };
+
+  const onMouseLeave = () => {
+    handleDragEnd();
+  };
+
+  const onMouseUp = () => {
+    handleDragEnd();
+  };
+
+  const onTouchStart = (e) => {
+    if (!e.touches[0]) return;
+    handleDragStart(e.touches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    if (!e.touches[0]) return;
+    handleDragMove(e.touches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    handleDragEnd();
+  };
+
+  const scrollStripByDirection = (direction) => {
+    const strip = categoriesStripRef.current;
+    if (!strip) return;
+
+    const firstCard = strip.querySelector(".shop-category-card");
+    if (!firstCard) return;
+
+    const cardWidth = firstCard.offsetWidth + 24;
+    const delta = direction === "right" ? cardWidth * 2 : -cardWidth * 2;
+    const target = strip.scrollLeft + delta;
+
+    gsap.to(strip, {
+      scrollLeft: target,
+      duration: 0.4,
+      ease: "power2.out",
+    });
+  };
+
+  useEffect(() => {
+    const strip = categoriesStripRef.current;
+    if (!strip) return undefined;
+
+    const step = () => {
+      const currentStrip = categoriesStripRef.current;
+      if (!currentStrip) return;
+      if (isDraggingRef.current) return;
+
+      const firstCard = currentStrip.querySelector(".shop-category-card");
+      if (!firstCard) return;
+
+      const cardWidth = firstCard.offsetWidth + 24;
+      let target = currentStrip.scrollLeft + cardWidth * 2;
+      const max = currentStrip.scrollWidth - currentStrip.clientWidth;
+
+      if (target > max) {
+        currentStrip.scrollLeft = 0;
+        target = cardWidth * 2;
+      }
+
+      gsap.to(currentStrip, {
+        scrollLeft: target,
+        duration: 0.5,
+        ease: "power3.out", // start fast, slow down at the end
+      });
+    };
+
+    // 0.5s animation + ~1.5s pause between moves
+    const intervalId = setInterval(step, 2000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
   return (
     <div className="shop-page">
       {/* Hero banner */}
@@ -318,8 +412,18 @@ export default function Shop() {
           ))}
         </div>
 
-        {/* Mobile-only auto-scrolling strip */}
-        <div className="shop-categories-strip">
+        {/* Mobile-only strip with drag-to-scroll */}
+        <div
+          className="shop-categories-strip"
+          ref={categoriesStripRef}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseLeave={onMouseLeave}
+          onMouseUp={onMouseUp}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
           <div className="shop-categories-track">
             {[...categories, ...categories].map((item, index) => (
               <div
@@ -368,8 +472,64 @@ export default function Shop() {
                   viewMode === "3" ? "shop-view-icon-active" : ""
                 }`}
                 onClick={() => setViewMode("3")}
+                aria-label="3 column view"
               >
-                ▤
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="3"
+                    y="4"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <rect
+                    x="9.5"
+                    y="4"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <rect
+                    x="16"
+                    y="4"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <rect
+                    x="3"
+                    y="13"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <rect
+                    x="9.5"
+                    y="13"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <rect
+                    x="16"
+                    y="13"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                </svg>
               </button>
               <button
                 type="button"
@@ -377,6 +537,7 @@ export default function Shop() {
                   viewMode === "4" ? "shop-view-icon-active" : ""
                 }`}
                 onClick={() => setViewMode("4")}
+                aria-label="4 column view"
               >
                 ▦
               </button>
@@ -410,7 +571,7 @@ export default function Shop() {
                 </div>
                 <h3 className="shop-product-name">{product.name}</h3>
                 <div className="shop-product-price">{product.price}</div>
-                <button className="shop-product-button">ADD TO CART</button>
+                <button className="shop-product-button">VIEW DETAILS</button>
               </div>
             </article>
           ))}
