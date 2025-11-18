@@ -1,0 +1,582 @@
+import { useState, useEffect, useRef } from "react";
+import "../css/shop.css";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { parsePrice, getSortedProducts } from "../utils/shopUtils";
+
+const categories = [
+  {
+    label: "Necklaces",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2023/02/Honey-Comb-Lace-Heart-Earrings-4.jpg",
+  },
+  {
+    label: "Rings",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2023/02/Rose-Gold-Bracelet-4.jpg",
+  },
+  {
+    label: "Bracelets",
+    image: "https://tulsiyajewels.com/wp-content/uploads/2025/02/new11.png",
+  },
+  {
+    label: "Earrings",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2023/02/Sterling-Silver-Dangles-Earrings-1.jpg",
+  },
+];
+
+const braceletProducts = [
+  {
+    id: "1729",
+    name: "Blush Bloom Rose Gold Diamond Bracelet",
+    price: "₹38,450.00",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/69-325x325.jpg",
+  },
+  {
+    id: "1744",
+    name: "Celeste Whisper Bezel-Set Diamond Chain Bracelet",
+    price: "₹42,990.25",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/69-325x325.jpg",
+  },
+  {
+    id: "1780",
+    name: "Elegant Emerald & Diamond Tennis Bracelet",
+    price: "₹55,675.80",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/79-325x325.jpg",
+  },
+  {
+    id: "1758",
+    name: "Minimal Radiance Diamond Bar Necklace & Bracelet Set",
+    price: "₹47,320.40",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/21-325x325.jpg",
+  },
+  {
+    id: "1770",
+    name: "Whispers of Gold – Diamond Bezel-Set Chain Bracelet",
+    price: "₹41,885.10",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/62-325x325.jpg",
+  },
+];
+
+const earringProducts = [
+  {
+    id: "1848",
+    name: "Celestia Curve Solitaire Earrings",
+    price: "₹29,750.00",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/108-325x325.jpg",
+  },
+  {
+    id: "1896",
+    name: "Emerald Cascade Drop Earrings",
+    price: "₹33,420.35",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/25-325x325.jpg",
+  },
+  {
+    id: "1908",
+    name: "Floral Grace Pendant & Earrings Diamond Set",
+    price: "₹69,977.50",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/31-325x325.jpg",
+  },
+  {
+    id: "1875",
+    name: "Gilded Frame Emerald-Cut Drop Earrings",
+    price: "₹39,980.00",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/52-325x325.jpg",
+  },
+  {
+    id: "1866",
+    name: "Golden Drape Leaf-Drop Earrings",
+    price: "₹31,640.75",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/06-325x325.jpg",
+  },
+  {
+    id: "1887",
+    name: "Linear Luxe Art Deco Earrings",
+    price: "₹36,215.20",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/130-325x325.jpg",
+  },
+  {
+    id: "1857",
+    name: "Twilight Cascade Dual-Stone Earrings",
+    price: "₹34,890.60",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/108-325x325.jpg",
+  },
+];
+
+const ringProducts = [
+  {
+    id: "1532",
+    name: "Azure Blossom Color Diamond Ring",
+    price: "₹49,928.55",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/169A5175-325x325.jpg",
+  },
+  {
+    id: "1613",
+    name: "Celestial Swirl Diamond Ring",
+    price: "₹48,893.86",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/57-325x325.jpg",
+  },
+  {
+    id: "1624",
+    name: "Crimson Grace Emerald-Cut Ring",
+    price: "₹42,774.52",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/94-325x325.jpg",
+  },
+  {
+    id: "1634",
+    name: "Ember Kiss Halo Red Diamond Ring",
+    price: "₹45,250.00",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/89-325x325.jpg",
+  },
+  {
+    id: "1696",
+    name: "Eternal Harmony Twin Pear Diamond Ring",
+    price: "₹51,300.00",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/87-325x325.jpg",
+  },
+  {
+    id: "1718",
+    name: "Luxe Brilliance Baguette-Cut Diamond Statement Band",
+    price: "₹55,900.00",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/89-325x325.jpg",
+  },
+  {
+    id: "1643",
+    name: "Majestic Brilliance Cushion-Cut Diamond Ring",
+    price: "₹47,650.00",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/47-325x325.jpg",
+  },
+  {
+    id: "1704",
+    name: "Timeless Gleam Bezel-Set Diamond Band",
+    price: "₹44,200.00",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/53-325x325.jpg",
+  },
+];
+
+const necklaceProducts = [
+  {
+    id: "1828",
+    name: "Crimson Bloom Diamond Necklace",
+    price: "₹63,253.75",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/119-325x325.jpg",
+  },
+  {
+    id: "1801",
+    name: "Diamond Butterfly Pendant Necklace in Gold",
+    price: "₹68,384.65",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/25-325x325.jpg",
+  },
+  {
+    id: "1908",
+    name: "Floral Grace Pendant & Earrings Diamond Set",
+    price: "₹69,977.50",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/44-325x325.jpg",
+  },
+  {
+    id: "1810",
+    name: "Luxe Éclat Diamond Set",
+    price: "₹48,172.13",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/20-325x325.jpg",
+  },
+  {
+    id: "1790",
+    name: "Rose Gold Leaf Pendant Necklace with Diamond Accents",
+    price: "₹52,640.00",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/117-325x325.jpg",
+  },
+  {
+    id: "1839",
+    name: "Stellar Bloom Round Diamond Necklace Set",
+    price: "₹57,310.40",
+    image:
+      "https://tulsiyajewels.com/wp-content/uploads/2025/07/34-325x325.jpg",
+  },
+];
+
+const productMap = {
+  Rings: ringProducts,
+  Necklaces: necklaceProducts,
+  Bracelets: braceletProducts,
+  Earrings: earringProducts,
+};
+
+export default function Shop() {
+  const [sortBy, setSortBy] = useState("default");
+  const [activeCategory, setActiveCategory] = useState("Rings");
+  const [viewMode, setViewMode] = useState("3"); // "3" or "4" columns
+  const currentProducts = productMap[activeCategory] || ringProducts;
+  const sortedProducts = getSortedProducts(currentProducts, sortBy);
+  const productsRef = useRef([]);
+  const categoriesStripRef = useRef(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+  }, []);
+
+  useEffect(() => {
+    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+    productsRef.current.forEach((el) => {
+      if (!el) return;
+
+      gsap.fromTo(
+        el,
+        { autoAlpha: 0, y: 40 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, [sortedProducts]);
+
+  const handleDragStart = (clientX) => {
+    const strip = categoriesStripRef.current;
+    if (!strip) return;
+    isDraggingRef.current = true;
+    startXRef.current = clientX - strip.offsetLeft;
+    scrollLeftRef.current = strip.scrollLeft;
+  };
+
+  const handleDragMove = (clientX) => {
+    if (!isDraggingRef.current) return;
+    const strip = categoriesStripRef.current;
+    if (!strip) return;
+    const x = clientX - strip.offsetLeft;
+    const walk = (x - startXRef.current) * 1.2;
+    strip.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const handleDragEnd = () => {
+    isDraggingRef.current = false;
+  };
+
+  const onMouseDown = (e) => {
+    handleDragStart(e.clientX);
+  };
+
+  const onMouseMove = (e) => {
+    if (!isDraggingRef.current) return;
+    e.preventDefault();
+    handleDragMove(e.clientX);
+  };
+
+  const onMouseLeave = () => {
+    handleDragEnd();
+  };
+
+  const onMouseUp = () => {
+    handleDragEnd();
+  };
+
+  const onTouchStart = (e) => {
+    if (!e.touches[0]) return;
+    handleDragStart(e.touches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    if (!e.touches[0]) return;
+    handleDragMove(e.touches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    handleDragEnd();
+  };
+
+  const scrollStripByDirection = (direction) => {
+    const strip = categoriesStripRef.current;
+    if (!strip) return;
+
+    const firstCard = strip.querySelector(".shop-category-card");
+    if (!firstCard) return;
+
+    const cardWidth = firstCard.offsetWidth + 24;
+    const delta = direction === "right" ? cardWidth * 2 : -cardWidth * 2;
+    const target = strip.scrollLeft + delta;
+
+    gsap.to(strip, {
+      scrollLeft: target,
+      duration: 0.4,
+      ease: "power2.out",
+    });
+  };
+
+  useEffect(() => {
+    const strip = categoriesStripRef.current;
+    if (!strip) return undefined;
+
+    const step = () => {
+      const currentStrip = categoriesStripRef.current;
+      if (!currentStrip) return;
+      if (isDraggingRef.current) return;
+
+      const firstCard = currentStrip.querySelector(".shop-category-card");
+      if (!firstCard) return;
+
+      const cardWidth = firstCard.offsetWidth + 24;
+      let target = currentStrip.scrollLeft + cardWidth * 2;
+      const max = currentStrip.scrollWidth - currentStrip.clientWidth;
+
+      if (target > max) {
+        currentStrip.scrollLeft = 0;
+        target = cardWidth * 2;
+      }
+
+      gsap.to(currentStrip, {
+        scrollLeft: target,
+        duration: 0.5,
+        ease: "power3.out", // start fast, slow down at the end
+      });
+    };
+
+    // 0.5s animation + ~1.5s pause between moves
+    const intervalId = setInterval(step, 2000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  return (
+    <div className="shop-page">
+      {/* Hero banner */}
+      <section className="shop-hero">
+        <div className="shop-hero-overlay" />
+        <div className="shop-hero-inner">
+          <h1 className="shop-title">Shop</h1>
+          <div className="shop-breadcrumb">Home &gt; Shop</div>
+        </div>
+      </section>
+
+      {/* Categories section */}
+      <section className="shop-categories-section">
+        <div className="shop-categories-static">
+          {categories.map((item) => (
+            <div
+              key={item.label}
+              className={`shop-category-card ${
+                activeCategory === item.label ? "shop-category-card-active" : ""
+              }`}
+              onClick={() => setActiveCategory(item.label)}
+            >
+              <div className="shop-category-image-wrap">
+                <img
+                  src={item.image}
+                  alt={item.label}
+                  className="shop-category-image"
+                />
+              </div>
+              <div className="shop-category-label">{item.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile-only strip with drag-to-scroll */}
+        <div
+          className="shop-categories-strip"
+          ref={categoriesStripRef}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseLeave={onMouseLeave}
+          onMouseUp={onMouseUp}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          <div className="shop-categories-track">
+            {[...categories, ...categories].map((item, index) => (
+              <div
+                key={`${item.label}-${index}`}
+                className={`shop-category-card ${
+                  activeCategory === item.label
+                    ? "shop-category-card-active"
+                    : ""
+                }`}
+                onClick={() => setActiveCategory(item.label)}
+              >
+                <div className="shop-category-image-wrap">
+                  <img
+                    src={item.image}
+                    alt={item.label}
+                    className="shop-category-image"
+                  />
+                </div>
+                <div className="shop-category-label">{item.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="shop-products-section">
+        <div className="shop-products-header">
+          <div className="shop-products-results">
+            Showing {sortedProducts.length} results
+          </div>
+          <div className="shop-products-controls">
+            <span className="shop-products-sort-label">Sort by</span>
+            <select
+              className="shop-products-sort-select"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="default">Default sorting</option>
+              <option value="price-low-high">Sort by price: low to high</option>
+              <option value="price-high-low">Sort by price: high to low</option>
+            </select>
+            <div className="shop-products-view-icons">
+              <button
+                type="button"
+                className={`shop-view-icon ${
+                  viewMode === "3" ? "shop-view-icon-active" : ""
+                }`}
+                onClick={() => setViewMode("3")}
+                aria-label="3 column view"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="3"
+                    y="4"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <rect
+                    x="9.5"
+                    y="4"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <rect
+                    x="16"
+                    y="4"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <rect
+                    x="3"
+                    y="13"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <rect
+                    x="9.5"
+                    y="13"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <rect
+                    x="16"
+                    y="13"
+                    width="5"
+                    height="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                className={`shop-view-icon ${
+                  viewMode === "4" ? "shop-view-icon-active" : ""
+                }`}
+                onClick={() => setViewMode("4")}
+                aria-label="4 column view"
+              >
+                ▦
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className={`shop-products-grid ${
+            viewMode === "4" ? "shop-products-grid-4" : ""
+          }`}
+        >
+          {sortedProducts.map((product, index) => (
+            <article
+              key={product.id}
+              className="shop-product-card"
+              ref={(el) => {
+                productsRef.current[index] = el;
+              }}
+            >
+              <div className="shop-product-image-wrap">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="shop-product-image"
+                />
+              </div>
+              <div className="shop-product-meta">
+                <div className="shop-product-category">
+                  {activeCategory.toUpperCase()}
+                </div>
+                <h3 className="shop-product-name">{product.name}</h3>
+                <div className="shop-product-price">{product.price}</div>
+                <button className="shop-product-button">VIEW DETAILS</button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
