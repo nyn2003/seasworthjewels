@@ -39,4 +39,13 @@ export default [
       },
     },
   },
+  // Override for Node.js config files (vite.config.js, etc.)
+  {
+    files: ["vite.config.js", "*.config.js"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
 ];

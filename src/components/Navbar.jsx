@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../css/Nav.css";
 import logoBlack from "../assets/SWJ_Logo_Final_Black.png";
 import logoWhite from "../assets/SWJ_Logo_Final_White.png";
@@ -39,27 +40,27 @@ export default function Navbar() {
           <div className="nav-content">
             {/* Logo */}
             <div className="nav-logo">
-              <a href="/">
+              <Link to="/">
                 <img
                   src={scrolled ? logoBlack : logoWhite}
                   alt="Seasworth Jewels"
                   className="logo-img"
                 />
-              </a>
+              </Link>
             </div>
 
             {/* Desktop Navigation */}
             <nav className="nav-menu">
-              <a href="/" className="nav-link">
+              <Link to="/" className="nav-link">
                 HOME
-              </a>
-              <a href="/shop" className="nav-link">
+              </Link>
+              <Link to="/shop" className="nav-link">
                 SHOP
-              </a>
-              <a href="/about" className="nav-link">
+              </Link>
+              <a href="#about" className="nav-link">
                 ABOUT US
               </a>
-              <a href="/contact" className="nav-link">
+              <a href="#contact" className="nav-link">
                 CONTACT
               </a>
             </nav>
@@ -125,8 +126,8 @@ export default function Navbar() {
 
           {/* Navigation Links */}
           <nav className="mobile-nav-links">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="mobile-nav-link"
               onClick={() => setOpen(false)}
             >
@@ -139,9 +140,9 @@ export default function Navbar() {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-            </a>
-            <a
-              href="/shop"
+            </Link>
+            <Link
+              to="/shop"
               className="mobile-nav-link"
               onClick={() => setOpen(false)}
             >
@@ -154,7 +155,7 @@ export default function Navbar() {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-            </a>
+            </Link>
             <a
               href="#about"
               className="mobile-nav-link"

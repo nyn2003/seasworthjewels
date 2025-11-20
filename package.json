@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:netlify": "VITE_BASE_URL=/ vite build",
+    "build:gh-pages": "VITE_BASE_URL=/seasworthjewels/ vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build:gh-pages",
     "deploy": "gh-pages -d dist"
   },
   "lint-staged": {
