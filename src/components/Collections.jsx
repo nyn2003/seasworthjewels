@@ -97,8 +97,8 @@ export default function Collections() {
                 ))}
               </div>
               <p className="collection-subtitle">{section.subtitle}</p>
-              <div className="hero-buttons">
-                <a href="#shop" className="hero-btn primary">
+              <div className="collection-buttons">
+                <a href="#shop" className="collection-btn primary">
                   Discover Collection
                 </a>
               </div>

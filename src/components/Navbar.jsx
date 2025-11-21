@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../css/Nav.css";
 import logoBlack from "../assets/SWJ_Logo_Final_Black.png";
 import logoWhite from "../assets/SWJ_Logo_Final_White.png";
@@ -7,22 +7,19 @@ import logoWhite from "../assets/SWJ_Logo_Final_White.png";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      const isHome = location.pathname === "/";
-      const isScrolled = isHome ? window.scrollY > 100 : true;
+      const isScrolled = window.scrollY > 100;
       setScrolled(isScrolled);
     };
 
-    handleScroll();
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [location.pathname]);
+  }, []);
 
   useEffect(() => {
     if (open) {
@@ -160,7 +157,7 @@ export default function Navbar() {
               </svg>
             </Link>
             <a
-              href="/about"
+              href="#about"
               className="mobile-nav-link"
               onClick={() => setOpen(false)}
             >
@@ -175,7 +172,7 @@ export default function Navbar() {
               </svg>
             </a>
             <a
-              href="/contact"
+              href="#contact"
               className="mobile-nav-link"
               onClick={() => setOpen(false)}
             >
