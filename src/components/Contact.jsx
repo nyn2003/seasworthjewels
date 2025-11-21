@@ -1,6 +1,90 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  serverTimestamp,
+  getCountFromServer,
+} from "firebase/firestore";
+import { db } from "../firebase";
 
 const Contact = () => {
+  const formRef = useRef(null);
+  const [status, setStatus] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("Sending...");
+
+    const form = formRef.current;
+    const name = form.user_name.value;
+    const email = form.user_email.value;
+    const subject = form.subject.value;
+    const message = form.message.value;
+
+    let docRef;
+    try {
+      docRef = await addDoc(collection(db, "contactMessages"), {
+        name,
+        email,
+        subject,
+        message,
+        createdAt: serverTimestamp(),
+        emailSent: false,
+      });
+    } catch (err) {
+      console.error("Error saving to Firebase", err);
+    }
+
+    try {
+      await emailjs.sendForm(
+        "service_gie90lq",
+        "template_d3lht2e",
+        formRef.current,
+        "ZqS9B8Gz88t9ySv2F"
+      );
+
+      if (docRef) {
+        await updateDoc(doc(db, "contactMessages", docRef.id), {
+          emailSent: true,
+        });
+
+        // Optional: check how many contact docs exist and warn admin if near EmailJS limit
+        try {
+          const snapshot = await getCountFromServer(
+            collection(db, "contactMessages")
+          );
+          const totalMessages = snapshot.data().count;
+
+          if (totalMessages >= 190) {
+            // Send a separate alert email to admin about low credits
+            await emailjs.send(
+              "service_gie90lq",
+              "YOUR_QUOTA_ALERT_TEMPLATE_ID",
+              {
+                total_messages: totalMessages,
+              },
+              "ZqS9B8Gz88t9ySv2F"
+            );
+          }
+        } catch (countErr) {
+          console.error("Failed to check contact message count", countErr);
+        }
+      }
+
+      setStatus("Message sent successfully.");
+      if (formRef.current) {
+        formRef.current.reset();
+      }
+    } catch (err) {
+      console.error("EmailJS failed", err);
+      setStatus("Something went wrong. Please try again.");
+      // emailSent remains false
+    }
+  };
+
   return (
     <div
       className="bg-white text-gray-900 pt-28 pb-20 px-4 sm:px-6 lg:px-10"
@@ -136,17 +220,23 @@ const Contact = () => {
       </div>
 
       <div className="max-w-3xl mx-auto bg-white border border-gray-200 shadow-sm px-6 sm:px-8 py-8">
-        <form className="space-y-6 text-base">
+        <form
+          ref={formRef}
+          onSubmit={handleSubmit}
+          className="space-y-6 text-base"
+        >
           {/* Name + Email */}
           <div className="grid md:grid-cols-2 gap-4">
             <input
               type="text"
               placeholder="Name"
+              name="user_name"
               className="border border-gray-300 px-3 py-2 w-full text-sm focus:outline-none focus:border-gray-500 placeholder:text-gray-400"
             />
             <input
               type="email"
               placeholder="Email"
+              name="user_email"
               className="border border-gray-300 px-3 py-2 w-full text-sm focus:outline-none focus:border-gray-500 placeholder:text-gray-400"
             />
           </div>
@@ -155,6 +245,7 @@ const Contact = () => {
           <input
             type="text"
             placeholder="Subject"
+            name="subject"
             className="border border-gray-300 px-3 py-2 w-full text-sm focus:outline-none focus:border-gray-500 placeholder:text-gray-400"
           />
 
@@ -162,6 +253,7 @@ const Contact = () => {
           <textarea
             rows="5"
             placeholder="Write Your Comment..."
+            name="message"
             className="border border-gray-300 px-3 py-2 w-full text-sm resize-none focus:outline-none focus:border-gray-500 placeholder:text-gray-400"
           ></textarea>
 
@@ -182,6 +274,9 @@ const Contact = () => {
             >
               Send Message
             </button>
+            {status && (
+              <p className="mt-3 text-xs text-gray-600 text-center">{status}</p>
+            )}
           </div>
         </form>
       </div>

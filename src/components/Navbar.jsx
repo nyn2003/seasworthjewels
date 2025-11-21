@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../css/Nav.css";
 import logoBlack from "../assets/SWJ_Logo_Final_Black.png";
 import logoWhite from "../assets/SWJ_Logo_Final_White.png";
@@ -60,12 +60,12 @@ export default function Navbar() {
               <Link to="/shop" className="nav-link">
                 SHOP
               </Link>
-              <a href="#about" className="nav-link">
+              <Link to="/about" className="nav-link">
                 ABOUT US
-              </a>
-              <a href="#contact" className="nav-link">
+              </Link>
+              <Link to="/contact" className="nav-link">
                 CONTACT
-              </a>
+              </Link>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -159,8 +159,8 @@ export default function Navbar() {
                 />
               </svg>
             </Link>
-            <a
-              href="/about"
+            <Link
+              to="/about"
               className="mobile-nav-link"
               onClick={() => setOpen(false)}
             >
@@ -173,9 +173,9 @@ export default function Navbar() {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-            </a>
-            <a
-              href="/contact"
+            </Link>
+            <Link
+              to="/contact"
               className="mobile-nav-link"
               onClick={() => setOpen(false)}
             >
@@ -188,7 +188,7 @@ export default function Navbar() {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-            </a>
+            </Link>
           </nav>
 
           {/* Mobile Footer */}

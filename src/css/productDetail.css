@@ -1,0 +1,272 @@
+.pdp-page {
+  background-color: #ffffff;
+  padding-top: 7rem;
+  padding-bottom: 4rem;
+}
+
+.pdp-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.pdp-breadcrumb {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+.pdp-breadcrumb-link {
+  cursor: pointer;
+}
+
+.pdp-breadcrumb-link:hover {
+  color: #111827;
+}
+
+.pdp-breadcrumb-sep {
+  margin: 0 0.5rem;
+}
+
+.pdp-breadcrumb-current {
+  color: #111827;
+}
+
+.pdp-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 3rem;
+}
+
+/* Gallery */
+.pdp-gallery-main {
+  width: 100%;
+  background-color: #f4f4f5;
+  overflow: hidden;
+}
+
+.pdp-gallery-main img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.pdp-gallery-thumbs {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.pdp-thumb {
+  border: 1px solid transparent;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.pdp-thumb img {
+  width: 100%;
+  display: block;
+}
+
+.pdp-thumb-active {
+  border-color: #111827;
+}
+
+/* Details */
+.pdp-details {
+  font-size: 0.95rem;
+}
+
+.pdp-title {
+  font-size: 1.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+}
+
+.pdp-price {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.pdp-meta-line {
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin-bottom: 0.35rem;
+}
+
+.pdp-meta-line span {
+  color: #111827;
+}
+
+.pdp-short-desc {
+  margin-top: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.pdp-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.pdp-option {
+  min-width: 160px;
+}
+
+.pdp-label {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #6b7280;
+  margin-bottom: 0.4rem;
+}
+
+.pdp-select {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+.pdp-qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #d1d5db;
+}
+
+.pdp-qty button {
+  border: none;
+  background: #f3f4f6;
+  width: 2.1rem;
+  height: 2.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pdp-qty span {
+  width: 2.6rem;
+  text-align: center;
+}
+
+.pdp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.pdp-btn {
+  border: 1px solid #111827;
+  padding: 0.6rem 1.6rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+}
+
+.pdp-btn.primary {
+  background-color: #111827;
+  color: #ffffff;
+}
+
+.pdp-btn.secondary {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.pdp-extra-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.pdp-text-link {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #4b5563;
+}
+
+.pdp-meta-grid {
+  font-size: 0.8rem;
+  color: #6b7280;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.pdp-meta-label {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  margin-right: 0.25rem;
+}
+
+/* Lower section */
+.pdp-lower {
+  margin-top: 3rem;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 2rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 2.5rem;
+}
+
+.pdp-lower h2 {
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.pdp-lower p {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.pdp-reviews p {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+/* Not found */
+.pdp-not-found {
+  text-align: center;
+}
+
+.pdp-back-button {
+  margin-top: 1rem;
+  border: 1px solid #111827;
+  padding: 0.5rem 1.4rem;
+  background-color: #111827;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .pdp-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pdp-lower {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
