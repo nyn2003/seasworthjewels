@@ -366,15 +366,29 @@ body.menu-open {
   transform: scale(1.1);
 }
 
-/* Enhanced focus states for accessibility */
+/* Focus states */
 .nav-link:focus,
 .mobile-toggle:focus,
 .mobile-close-btn:focus {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
-  outline-offset: 2px;
+  outline: none;
 }
 
-.navbar-scrolled .nav-link:focus,
-.navbar-scrolled .mobile-toggle:focus {
-  outline: 2px solid rgba(190, 18, 60, 0.5);
+/* Extra small screens (e.g. devices < 397px wide) */
+@media (max-width: 397px) {
+  .nav-container {
+    padding: 0 0.75rem;
+  }
+
+  .nav-content {
+    height: 4.5rem;
+  }
+
+  .logo-img {
+    height: 3rem;
+  }
+
+  .mobile-toggle svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 }

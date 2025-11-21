@@ -6,6 +6,9 @@ import Collections from "./components/Collections.jsx";
 import Footer from "./components/Footer.jsx";
 import Shop from "./components/Shop.jsx";
 import Preloader from "./components/Preloader.jsx";
+import Contact from "./components/Contact.jsx";
+import About from "./components/About.jsx";
+import ProductDetail from "./components/ProductDetail.jsx";
 
 function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -50,6 +53,9 @@ function App() {
             }
           />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
         <Footer />
       </main>

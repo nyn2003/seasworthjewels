@@ -5,34 +5,7 @@ export default function Footer() {
     <footer className="footer">
       {/* Main Footer Content */}
       <div className="footer-main">
-        {/* Left Section - Newsletter */}
-        <div className="footer-left">
-          <div className="footer-newsletter">
-            <h3 className="newsletter-title">Get updates</h3>
-            <p className="newsletter-text">
-              Be the first to know about new collections, exclusive offers and
-              more.
-            </p>
-            <form
-              className="newsletter-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
-              <input
-                type="email"
-                className="newsletter-input"
-                placeholder="Enter your email"
-                required
-              />
-              <button type="submit" className="newsletter-button">
-                Subscribe
-              </button>
-            </form>
-          </div>
-        </div>
-
-        {/* Right Section - Links & Contact */}
+        {/* Links & Contact */}
         <div className="footer-right">
           <div className="footer-columns">
             {/* Quick Links */}
